@@ -1,0 +1,73 @@
+// main.cpp
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <stdexcept>
+
+#include "include/penjual_mode.hpp"
+#include "include/pembeli_mode.hpp"
+#include "include/file_handler.hpp"
+#include "include/exception_handler.hpp"
+
+int main() {
+    const std::string file_barang = "data/barang.txt";
+    const std::string file_user = "data/user.txt";
+
+    NodeBarang* root_barang = nullptr;
+    UserTable user_table;
+
+    // Muat data dari file
+    try {
+        root_barang = muat_data_barang(file_barang);
+        muat_data_user(user_table, file_user);
+    } catch (const std::exception& e) {
+        std::cerr << "Gagal memuat data: " << e.what() << "\n";
+        return 1;
+    }
+
+    // Menu utama
+    std::vector<std::string> menu = {
+        "1. Mode Penjual",
+        "2. Mode Pembeli",
+        "0. Keluar"
+    };
+
+    while (true) {
+        std::cout << "\n===== MENU UTAMA =====\n";
+
+        // Urutkan menu (opsional) dengan lambda jika ingin
+        std::sort(menu.begin(), menu.end(), [](const std::string& a, const std::string& b) {
+            return a < b;
+        });
+
+        for (const auto& m : menu) {
+            std::cout << m << "\n";
+        }
+
+        std::cout << "Pilih opsi: ";
+        std::string input;
+        std::getline(std::cin, input);
+
+        try {
+            int pilihan = safe_stoi(input);
+            if (pilihan == 1) {
+                menu_penjual(root_barang, file_barang);
+            } else if (pilihan == 2) {
+                menu_pembeli(user_table, root_barang);
+            } else if (pilihan == 0) {
+                // Simpan data sebelum keluar
+                simpan_data_barang(root_barang, file_barang);
+                simpan_data_user(user_table, file_user);
+                std::cout << "Data disimpan. Terima kasih!\n";
+                break;
+            } else {
+                std::cout << "Pilihan tidak valid.\n";
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Input error: " << e.what() << "\n";
+        }
+    }
+
+    return 0;
+}
