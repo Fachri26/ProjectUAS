@@ -53,7 +53,7 @@ int main() {
             if (pilihan == 1) {
                 menu_penjual(root_barang, file_barang);
             } else if (pilihan == 2) {
-menu_pembeli(user_table, root_barang);
+                menu_awal_pembeli(user_table, root_barang);
             } else if (pilihan == 3) {
                 // Simpan data sebelum keluar
                 simpan_data_barang(root_barang, file_barang);
