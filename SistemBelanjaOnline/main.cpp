@@ -11,8 +11,8 @@
 #include "include/exception_handler.hpp"
 
 int main() {
-    const std::string file_barang = "data/barang.txt";
-    const std::string file_user = "data/user.txt";
+    const std::string file_barang = "SistemBelanjaOnline/data/barang.txt";
+    const std::string file_user = "SistemBelanjaOnline/data/user.txt";
 
     NodeBarang* root_barang = nullptr;
     UserTable user_table;
@@ -30,13 +30,12 @@ int main() {
     std::vector<std::string> menu = {
         "1. Mode Penjual",
         "2. Mode Pembeli",
-        "0. Keluar"
+        "3. Keluar"
     };
 
     while (true) {
         std::cout << "\n===== MENU UTAMA =====\n";
 
-        // Urutkan menu (opsional) dengan lambda jika ingin
         std::sort(menu.begin(), menu.end(), [](const std::string& a, const std::string& b) {
             return a < b;
         });
@@ -54,8 +53,8 @@ int main() {
             if (pilihan == 1) {
                 menu_penjual(root_barang, file_barang);
             } else if (pilihan == 2) {
-                menu_pembeli(user_table, root_barang);
-            } else if (pilihan == 0) {
+menu_pembeli(user_table, root_barang);
+            } else if (pilihan == 3) {
                 // Simpan data sebelum keluar
                 simpan_data_barang(root_barang, file_barang);
                 simpan_data_user(user_table, file_user);

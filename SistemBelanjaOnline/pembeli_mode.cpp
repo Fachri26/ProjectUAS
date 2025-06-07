@@ -1,30 +1,11 @@
 #include "include/pembeli_mode.hpp"
 #include "include/exception_handler.hpp"
 #include "include/graph_jaringan.hpp"
+#include "include/file_handler.hpp"
 
 #include <iostream>
 #include <algorithm>
 #include <stdexcept>
-
-// Fungsi untuk registrasi pembeli baru
-bool registrasi_pembeli(UserTable& user_table) {
-    std::string username, password;
-    std::cout << "=== Registrasi Pembeli ===\n";
-    std::cout << "Username baru: ";
-    std::getline(std::cin, username);
-    std::cout << "Password: ";
-    std::getline(std::cin, password);
-
-    // Cek apakah username sudah digunakan
-    if (user_table.find(username) != user_table.end()) {
-        std::cerr << "Username sudah terdaftar. Silakan pilih username lain.\n";
-        return false;
-    }
-
-    user_table[username] = password;
-    std::cout << "Registrasi berhasil. Silakan login.\n";
-    return true;
-}
 
 // Fungsi untuk login pembeli
 bool login_pembeli(const UserTable& user_table, std::string& username) {
@@ -43,6 +24,51 @@ bool login_pembeli(const UserTable& user_table, std::string& username) {
         std::cerr << "Login gagal: " << e.what() << "\n";
     }
     return false;
+}
+
+//Fungsi untuk registe user
+bool register_user(UserTable& user_table, const std::string& filename) {
+    std::string username, password;
+    std::cout << "=== Registrasi Pengguna Baru ===\n";
+    std::cout << "Username baru: "; std::getline(std::cin, username);
+    std::cout << "Password: "; std::getline(std::cin, password);
+
+    try {
+        insert_user(user_table, username, password);
+        simpan_data_user(user_table, filename); // Simpan ke file
+        std::cout << "Registrasi berhasil. Silakan login.\n";
+        return true;
+    } catch (const std::exception& e) {
+        std::cerr << "Registrasi gagal: " << e.what() << "\n";
+    }
+    return false;
+}
+
+// Fungsi untuk memilih login atau register
+void menu_awal_pembeli(UserTable& user_table, NodeBarang* root_barang) {
+    const std::string user_data_file = "SistemBelanjaOnline/data/user.txt";
+
+    while (true) {
+        std::cout << "\n=== Selamat Datang di Sistem Belanja Online ===\n";
+        std::cout << "1. Login\n";
+        std::cout << "2. Daftar (Registrasi)\n";
+        std::cout << "0. Keluar\n";
+        std::cout << "Pilihan: ";
+
+        std::string input;
+        std::getline(std::cin, input);
+
+        if (input == "1") {
+            menu_pembeli(user_table, root_barang);
+        } else if (input == "2") {
+            register_user(user_table, user_data_file);
+        } else if (input == "0") {
+            std::cout << "Keluar dari sistem. Terima kasih.\n";
+            break;
+        } else {
+            std::cout << "Pilihan tidak valid.\n";
+        }
+    }
 }
 
 // Fungsi untuk konversi tree barang jadi vector (untuk cari dan tampil lebih mudah)
@@ -138,34 +164,11 @@ void tampilkan_keranjang(const std::vector<KeranjangItem>& keranjang) {
 
 void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
     std::string username;
-
-    while (true) {
-        std::cout << "\n=== Menu Awal Pembeli ===\n";
-        std::cout << "1. Login\n";
-        std::cout << "2. Registrasi\n";
-        std::cout << "0. Kembali ke menu utama\n";
-        std::cout << "Pilihan: ";
-        std::string input;
-        std::getline(std::cin, input);
-
-        try {
-            int pilihan = safe_stoi(input);
-            if (pilihan == 1) {
-                if (login_pembeli(user_table, username)) break;
-            } else if (pilihan == 2) {
-                registrasi_pembeli(user_table);
-            } else if (pilihan == 0) {
-                std::cout << "Kembali ke menu utama.\n";
-                return;
-            } else {
-                std::cout << "Pilihan tidak valid.\n";
-            }
-        } catch (const std::exception& e) {
-            std::cerr << "Error: " << e.what() << "\n";
-        }
+    if (!login_pembeli(user_table, username)) {
+        std::cout << "Gagal login. Kembali ke menu utama.\n";
+        return;
     }
 
-    // LOGIN BERHASIL, lanjutkan ke menu pembeli:
     std::vector<Barang> daftar_barang;
     flatten_barang(root_barang, daftar_barang);
 
@@ -232,15 +235,20 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                     if (keranjang.empty()) {
                         std::cout << "Keranjang kosong, tidak bisa checkout.\n";
                     } else {
+                        // Estimasi pengiriman dengan graph
                         Graph jaringan;
                         inisialisasi_jaringan(jaringan);
-                        std::string asal, tujuan;
+
+                        std::string asal;
+                        std::string tujuan;
                         std::cout << "Masukkan kota asal pengiriman: ";
                         std::getline(std::cin, asal);
                         std::cout << "Masukkan kota tujuan pengiriman: ";
                         std::getline(std::cin, tujuan);
 
+                        // Simulasi dengan dfs
                         dfs(jaringan, asal);
+
                         int jarak = estimasi_rute_bfs(jaringan, asal, tujuan);
                         if (jarak == -1) {
                             std::cout << "Tujuan tidak terjangkau dari " << asal << ". Pengiriman dibatalkan\n";
@@ -252,6 +260,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                         std::cout << "Estimasi pengiriman: " << jarak << " kota\n";
                         std::cout << "Biaya kirim: Rp" << ongkir << "\n";
 
+                        //Konfirmasi lanjut
                         std::cout << "Lanjutkan Checkout dengan ongkir Rp" << ongkir << "? (y/n): ";
                         std::string lanjut;
                         std::getline(std::cin, lanjut);
@@ -259,7 +268,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                             std::cout << "Checkout dibatalkan.\n";
                             return;
                         }
-
+                        // Update stok barang pada tree (kurangi stok sesuai keranjang)
                         for (const auto& item : keranjang) {
                             NodeBarang* node = cariBarang(root_barang, item.barang.id);
                             if (node) {
@@ -272,6 +281,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                         }
                         std::cout << "Checkout berhasil. Terima kasih telah berbelanja!\n";
                         keranjang.clear();
+                        // Reload daftar barang setelah stok berubah
                         daftar_barang.clear();
                         flatten_barang(root_barang, daftar_barang);
                     }
