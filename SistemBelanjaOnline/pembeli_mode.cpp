@@ -158,8 +158,6 @@ void tampilkan_keranjang(const std::vector<KeranjangItem>& keranjang) {
                   << item.barang.harga * item.jumlah << "\n";
     }
     std::cout << "Total Harga: " << total_harga(keranjang) << "\n";
-    std::cout << "Estimasi Pengiriman (10%): " << estimasi_pengiriman(keranjang) << "\n";
-    std::cout << "Total Bayar: " << total_harga(keranjang) + estimasi_pengiriman(keranjang) << "\n";
 }
 
 void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
