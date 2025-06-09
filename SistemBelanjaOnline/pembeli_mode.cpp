@@ -251,7 +251,10 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                         std::getline(std::cin, tujuan);
 
                         // Simulasi dengan dfs
+                        std::cout << "Simulasi penelusuran (DFS): \n";
                         dfs(jaringan, asal);
+                        std::cout << "Simulasi penelusuran (BFS): \n";
+                        bfs(jaringan, asal);
 
                         int jarak = estimasi_rute_bfs(jaringan, asal, tujuan);
                         if (jarak == -1) {
