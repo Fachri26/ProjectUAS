@@ -36,7 +36,7 @@ void simpan_data_barang(NodeBarang* root, const std::string& filename) {
 
 NodeBarang* muat_data_barang(const std::string& filename) {
     std::ifstream in(filename);
-    if (!in.is_open()) throw std::runtime_error("Gagal membuka file: " + filename);
+    cek_file_terbuka(in.is_open(), filename);
     NodeBarang* root = nullptr;
     std::string line;
     while (std::getline(in, line)) {
