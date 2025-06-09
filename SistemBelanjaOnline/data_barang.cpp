@@ -101,8 +101,6 @@ void inOrder(NodeBarang* root, std::function<void(Barang)> func) {
     }
 }
 
-
-
 // Fungsi minimum node
 NodeBarang* minValueNode(NodeBarang* node) {
     NodeBarang* current = node;

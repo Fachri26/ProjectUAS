@@ -139,6 +139,7 @@ void menu_penjual(NodeBarang*& root, const std::string& file_barang) {
         std::cout << "5. Urutkan & tampilkan barang\n";
         std::cout << "6. Barang stok rendah\n";
         std::cout << "7. Simpan dan keluar\n> ";
+        std::cout << "Pilih: ";
         std::getline(std::cin, pilihan);
 
         try {

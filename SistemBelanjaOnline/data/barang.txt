@@ -3,3 +3,4 @@
 3,spidol,28,7000
 4,tipe x,9,6000
 5,hapusan,34,4000
+6,Crayon,20,30000
