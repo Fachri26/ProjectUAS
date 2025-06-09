@@ -2,6 +2,7 @@
 #include "include/exception_handler.hpp"
 #include "include/graph_jaringan.hpp"
 #include "include/file_handler.hpp"
+#include "include/helper.hpp"
 
 #include <iostream>
 #include <algorithm>
@@ -31,6 +32,12 @@ bool register_user(UserTable& user_table, const std::string& filename) {
     std::string username, password;
     std::cout << "=== Registrasi Pengguna Baru ===\n";
     std::cout << "Username baru: "; std::getline(std::cin, username);
+
+    if (!lambda_validasi_username(username)) {
+        std::cerr << "Username tidak valid. Harus minimal 3 karakter dan hanya huruf/angka.\n";
+        return false;
+    }
+
     std::cout << "Password: "; std::getline(std::cin, password);
 
     try {
