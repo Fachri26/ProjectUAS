@@ -78,28 +78,3 @@ void muat_data_user(UserTable& table, const std::string& filename) {
     in.close();
 }
 
-void simpan_graph(const Graph& graph, const std::string& filename) {
-    std::ofstream out(filename);
-    if (!out.is_open()) throw std::runtime_error("Gagal membuka file: " + filename);
-    for (const auto& [lokasi, tetangga] : graph) {
-        out << lokasi;
-        for (const auto& t : tetangga) out << "," << t;
-        out << "\n";
-    }
-    out.close();
-}
-
-void muat_graph(Graph& graph, const std::string& filename) {
-    std::ifstream in(filename);
-    if (!in.is_open()) throw std::runtime_error("Gagal membuka file: " + filename);
-    std::string line;
-    while (std::getline(in, line)) {
-        std::stringstream ss(line);
-        std::string lokasi, tetangga;
-        std::getline(ss, lokasi, ',');
-        while (std::getline(ss, tetangga, ',')) {
-            graph[lokasi].push_back(tetangga);
-        }
-    }
-    in.close();
-}
