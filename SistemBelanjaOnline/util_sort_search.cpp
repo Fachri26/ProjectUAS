@@ -1,8 +1,7 @@
-// util_sort_search.cpp
 #include "include/util_sort_search.hpp"
 #include "include/helper.hpp"
 #include <cctype>
-#include <algorithm> // sort, find_if, count_if
+#include <algorithm>
 
 // Urutkan berdasarkan nama barang (ascending)
 void sort_barang_by_nama(std::vector<Barang>& daftar) {

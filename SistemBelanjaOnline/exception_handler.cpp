@@ -1,4 +1,3 @@
-// exception_handler.cpp
 #include "include/exception_handler.hpp"
 #include <iostream>
 #include <stdexcept>

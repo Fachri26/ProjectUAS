@@ -1,4 +1,3 @@
-// helper.h
 #ifndef HELPER_H
 #define HELPER_H
 
@@ -16,4 +15,4 @@ std::vector<std::string> split(const std::string& s, char delimiter);
 extern std::function<bool(const std::string&)> lambda_validasi_username;
 extern std::function<bool(int)> lambda_filter_stok_kritis;
 
-#endif // HELPER_H
+#endif 

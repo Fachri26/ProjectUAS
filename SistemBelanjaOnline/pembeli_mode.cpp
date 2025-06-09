@@ -145,11 +145,6 @@ double total_harga(const std::vector<KeranjangItem>& keranjang) {
     return total;
 }
 
-// Fungsi estimasi pengiriman (sederhana, misal biaya tetap 10% dari total harga)
-double estimasi_pengiriman(const std::vector<KeranjangItem>& keranjang) {
-    return total_harga(keranjang) * 0.1;
-}
-
 // Fungsi tampilkan keranjang
 void tampilkan_keranjang(const std::vector<KeranjangItem>& keranjang) {
     if (keranjang.empty()) {
@@ -239,7 +234,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                     if (keranjang.empty()) {
                         std::cout << "Keranjang kosong, tidak bisa checkout.\n";
                     } else {
-                        // Estimasi pengiriman dengan graph
+                        // Biaya pengiriman dengan graph
                         Graph jaringan;
                         inisialisasi_jaringan(jaringan);
 
@@ -250,7 +245,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                         std::cout << "Masukkan kota tujuan pengiriman: ";
                         std::getline(std::cin, tujuan);
 
-                        // Simulasi dengan dfs
+                        // Simulasi dengan dfs dan bfs
                         std::cout << "Simulasi penelusuran (DFS): \n";
                         dfs(jaringan, asal);
                         std::cout << "Simulasi penelusuran (BFS): \n";

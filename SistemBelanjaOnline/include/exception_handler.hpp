@@ -1,4 +1,3 @@
-// exception_handler.h
 #ifndef EXCEPTION_HANDLER_H
 #define EXCEPTION_HANDLER_H
 
@@ -13,4 +12,4 @@ int safe_divide(int numerator, int denominator);
 // Fungsi untuk cek keberadaan file dan lemparkan exception jika tidak ada
 void cek_file_terbuka(bool status, const std::string& nama_file);
 
-#endif // EXCEPTION_HANDLER_H
+#endif 

@@ -1,4 +1,3 @@
-// penjual_mode.cpp
 #include "include/penjual_mode.hpp"
 #include "include/file_handler.hpp"
 #include "include/util_sort_search.hpp"
@@ -10,6 +9,7 @@
 #include <vector>
 #include <algorithm>
 
+// Menampilkan seluruh data barang
 void tampilkan_semua(NodeBarang* root) {
     std::vector<Barang> daftar;
     inOrder(root, [&](Barang b) {
@@ -20,6 +20,7 @@ void tampilkan_semua(NodeBarang* root) {
     }
 }
 
+// Memberikan pilihan untuk urut berdasarkan nama barang atau stok
 void tampilkan_sort(NodeBarang* root) {
     std::vector<Barang> daftar;
     inOrder(root, [&](Barang b) {
@@ -38,6 +39,7 @@ void tampilkan_sort(NodeBarang* root) {
     }
 }
 
+// Menampilkan stok yang dibawah 10
 void tampilkan_stok_rendah(NodeBarang* root) {
     std::vector<Barang> daftar;
 
@@ -58,6 +60,7 @@ void tampilkan_stok_rendah(NodeBarang* root) {
 
 }
 
+// Menambahkan barang
 void tambah_barang(NodeBarang*& root) {
     Barang b;
     std::string input;
@@ -86,6 +89,7 @@ void tambah_barang(NodeBarang*& root) {
     std::cout << "Barang berhasil ditambahkan.\n";
 }
 
+// Mengedit barang
 void edit_barang(NodeBarang* root) {
     std::string input;
     std::cout << "Masukkan ID barang yang ingin diedit: ";
@@ -113,6 +117,7 @@ void edit_barang(NodeBarang* root) {
     std::cout << "Barang berhasil diedit.\n";
 }
 
+// Menghapus barang
 void hapus_barang(NodeBarang*& root) {
     std::string input;
     std::cout << "Masukkan ID barang yang ingin dihapus: ";
@@ -128,6 +133,7 @@ void hapus_barang(NodeBarang*& root) {
     std::cout << "Barang berhasil dihapus.\n";
 }
 
+// Menu utama mode penjual
 void menu_penjual(NodeBarang*& root, const std::string& file_barang) {
     std::string pilihan;
     while (true) {

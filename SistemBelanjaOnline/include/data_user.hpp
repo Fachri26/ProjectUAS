@@ -1,4 +1,3 @@
-// data_user.h
 #ifndef DATA_USER_H
 #define DATA_USER_H
 
@@ -15,8 +14,8 @@ struct User {
 // Tipe alias untuk hash table
 using UserTable = std::unordered_map<std::string, std::string>;
 
-// Fungsi
+// Fungsi utama untuk registrasi dan login
 void insert_user(UserTable& table, const std::string& username, const std::string& password);
 bool verify_login(const UserTable& table, const std::string& username, const std::string& password);
 
-#endif // DATA_USER_H
+#endif 

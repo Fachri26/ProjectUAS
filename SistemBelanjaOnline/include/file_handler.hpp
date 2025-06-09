@@ -1,4 +1,3 @@
-// file_handler.h
 #ifndef FILE_HANDLER_H
 #define FILE_HANDLER_H
 
@@ -19,4 +18,4 @@ NodeBarang* muat_data_barang(const std::string& filename);
 void simpan_data_user(const UserTable& table, const std::string& filename);
 void muat_data_user(UserTable& table, const std::string& filename);
 
-#endif // FILE_HANDLER_H
+#endif 

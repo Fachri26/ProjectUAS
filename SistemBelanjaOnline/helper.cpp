@@ -1,4 +1,3 @@
-// helper.cpp
 #include "include/helper.hpp"
 #include <sstream>
 #include <cctype>

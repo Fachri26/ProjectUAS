@@ -1,4 +1,3 @@
-// graph_jaringan.cpp
 #include "include/graph_jaringan.hpp"
 #include <iostream>
 #include <queue>
@@ -8,7 +7,7 @@
 // Menambahkan koneksi dua arah antara lokasi
 void tambah_koneksi(Graph& graph, const std::string& dari, const std::string& ke) {
     graph[dari].push_back(ke);
-    graph[ke].push_back(dari); // Asumsikan graf tidak berarah
+    graph[ke].push_back(dari); 
 }
 
 // Breadth-First Search

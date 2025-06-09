@@ -1,4 +1,3 @@
-// data_barang.cpp
 #include "include/data_barang.hpp"
 #include <iostream>
 #include <algorithm>

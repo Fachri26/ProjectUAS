@@ -1,4 +1,3 @@
-// file_handler.cpp
 #include "include/file_handler.hpp"
 #include "include/exception_handler.hpp"
 #include <sstream>
@@ -34,6 +33,7 @@ void simpan_data_barang(NodeBarang* root, const std::string& filename) {
     out.close();
 }
 
+// Fungsi untuk me-load data dari file
 NodeBarang* muat_data_barang(const std::string& filename) {
     std::ifstream in(filename);
     cek_file_terbuka(in.is_open(), filename);
@@ -51,6 +51,7 @@ NodeBarang* muat_data_barang(const std::string& filename) {
     return root;
 }
 
+// Simpan data user ke file
 void simpan_data_user(const UserTable& table, const std::string& filename) {
     std::ofstream out(filename);
     if (!out.is_open()) throw std::runtime_error("Gagal membuka file: " + filename);
@@ -60,6 +61,7 @@ void simpan_data_user(const UserTable& table, const std::string& filename) {
     out.close();
 }
 
+// Muat data user dari file
 void muat_data_user(UserTable& table, const std::string& filename) {
     std::ifstream in(filename);
     if (!in.is_open()) throw std::runtime_error("Gagal membuka file: " + filename);

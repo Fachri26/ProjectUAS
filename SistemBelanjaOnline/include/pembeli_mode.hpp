@@ -15,7 +15,6 @@ struct KeranjangItem {
 
 // Fungsi utama mode pembeli
 void menu_pembeli(UserTable& user_table, NodeBarang* root_barang);
-
 void menu_awal_pembeli(UserTable& user_table, NodeBarang* root_barang);
 
-#endif // PEMBELI_MODE_H
+#endif 

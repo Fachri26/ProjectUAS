@@ -1,4 +1,3 @@
-// data_user.cpp
 #include "include/data_user.hpp"
 #include <iostream>
 
