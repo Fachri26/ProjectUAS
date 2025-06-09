@@ -94,7 +94,6 @@ void inisialisasi_jaringan(Graph& g) {
     tambah_koneksi(g, "Yogyakarta", "Surabaya");
     tambah_koneksi(g, "Jakarta", "Semarang");
     tambah_koneksi(g, "Semarang", "Surabaya");
-    // Tambahkan kota sesuai kebutuhan
 }
 
 // Fungsi cari barang berdasarkan nama/kategori (kategori di sini diasumsikan bagian nama)

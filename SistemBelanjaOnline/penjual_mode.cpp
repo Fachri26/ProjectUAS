@@ -38,6 +38,26 @@ void tampilkan_sort(NodeBarang* root) {
     }
 }
 
+void tampilkan_stok_rendah(NodeBarang* root) {
+    std::vector<Barang> daftar;
+
+    inOrder(root, [&](Barang b) {
+        if (b.stok < 10) {  
+            daftar.push_back(b);
+        }
+    });
+
+    std::cout << "Barang dengan stok rendah:\n";
+    for (const auto& b : daftar) {
+        std::cout << "ID: " << b.id << ", Nama: " << b.nama
+                  << ", Stok: " << b.stok << '\n';
+    }
+
+    int jumlah = hitung_barang_stok_rendah(daftar);
+    std::cout << "Total barang dengan stok rendah: " << jumlah << '\n';
+
+}
+
 void tambah_barang(NodeBarang*& root) {
     Barang b;
     std::string input;
@@ -117,7 +137,8 @@ void menu_penjual(NodeBarang*& root, const std::string& file_barang) {
         std::cout << "3. Edit barang\n";
         std::cout << "4. Hapus barang\n";
         std::cout << "5. Urutkan & tampilkan barang\n";
-        std::cout << "6. Simpan dan keluar\n> ";
+        std::cout << "6. Barang stok rendah\n";
+        std::cout << "7. Simpan dan keluar\n> ";
         std::getline(std::cin, pilihan);
 
         try {
@@ -126,7 +147,8 @@ void menu_penjual(NodeBarang*& root, const std::string& file_barang) {
             else if (pilihan == "3") edit_barang(root);
             else if (pilihan == "4") hapus_barang(root);
             else if (pilihan == "5") tampilkan_sort(root);
-            else if (pilihan == "6") {
+            else if (pilihan == "6") tampilkan_stok_rendah(root);
+            else if (pilihan == "7") {
                 simpan_data_barang(root, file_barang);
                 std::cout << "Data berhasil disimpan.\n";
                 break;
