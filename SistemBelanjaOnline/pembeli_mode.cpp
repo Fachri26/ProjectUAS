@@ -100,12 +100,22 @@ void flatten_barang(NodeBarang* root, std::vector<Barang>& daftar) {
     flatten_barang(root->kanan, daftar);
 }
 
-// Fungsi tampilkan daftar barang
+// fungsi untuk menampilkan daftar barang
 void tampilkan_barang(const std::vector<Barang>& daftar) {
-    std::cout << "ID\tNama\tStok\tHarga\n";
+    std::cout << "\033[1;97m== Daftar Barang ==\033[0m\n";
+    std::cout << "+------+----------------------+--------+--------+\n";
+    std::cout << "| \033[1;97mID\033[0m   | \033[1;97mNama Barang\033[0m          | \033[1;97mStok\033[0m    | \033[1;97mHarga\033[0m |\n";
+    std::cout << "+------+----------------------+--------+--------+\n";
+
     for (const auto& b : daftar) {
-        std::cout << b.id << "\t" << b.nama << "\t" << b.stok << "\t" << b.harga << "\n";
+        std::cout << "| "
+                  << std::right << std::setw(4) << b.id << " | "
+                  << std::left  << std::setw(20) << b.nama << " | "
+                  << std::right << std::setw(6) << b.stok << " | "
+                  << std::right << std::setw(6) << b.harga << " |\n";
     }
+
+    std::cout << "+------+----------------------+--------+--------+\n";
 }
 
 // Fungsi untuk inisasliasi rute pengiriman
@@ -165,14 +175,23 @@ void tampilkan_keranjang(const std::vector<KeranjangItem>& keranjang) {
         std::cout << "Keranjang kosong.\n";
         return;
     }
-    std::cout << "Keranjang Anda:\n";
-    std::cout << "Nama\tJumlah\tHarga Satuan\tSubtotal\n";
+
+    std::cout << "\033[1;97m== Keranjang Anda ==\033[0m\n";
+    std::cout << "+----------------------+--------+---------------+------------+\n";
+    std::cout << "| \033[1;97mNama Barang\033[0m          | \033[1;97mJumlah\033[0m | \033[1;97mHarga Satuan\033[0m   | \033[1;97mSubtotal\033[0m   |\n";
+    std::cout << "+----------------------+--------+---------------+------------+\n";
+
     for (const auto& item : keranjang) {
-        std::cout << item.barang.nama << "\t" << item.jumlah << "\t"
-                  << item.barang.harga << "\t\t"
-                  << item.barang.harga * item.jumlah << "\n";
+        double subtotal = item.barang.harga * item.jumlah;
+        std::cout << "| "
+                  << std::left  << std::setw(20) << item.barang.nama << " | "
+                  << std::right << std::setw(6)  << item.jumlah       << " | "
+                  << std::right << std::setw(13) << std::fixed << std::setprecision(2) << item.barang.harga << " | "
+                  << std::right << std::setw(10) << std::fixed << std::setprecision(2) << subtotal << " |\n";
     }
-    std::cout << "Total Harga: " << total_harga(keranjang) << "\n";
+
+    std::cout << "+----------------------+--------+---------------+------------+\n";
+    std::cout << "Total Harga: \033[1;92m" << std::fixed << std::setprecision(2) << total_harga(keranjang) << "\033[0m\n";
 }
 
 void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
@@ -274,9 +293,9 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                         std::getline(std::cin, tujuan);
 
                         // Simulasi dengan dfs dan bfs
-                        std::cout << "Simulasi penelusuran (DFS): \n";
+                        std::cout << "\033[1;34mSimulasi penelusuran (DFS): \033[0m\n";
                         dfs(jaringan, asal);
-                        std::cout << "Simulasi penelusuran (BFS): \n";
+                        std::cout << "\033[1;34mSimulasi penelusuran (BFS): \033[0m\n";
                         bfs(jaringan, asal);
 
                         int jarak = estimasi_rute_bfs(jaringan, asal, tujuan);
@@ -288,7 +307,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                         int biaya_per_hop = 10000;
                         int ongkir = jarak * biaya_per_hop;
                         std::cout << "Estimasi pengiriman: " << jarak << " kota\n";
-                        std::cout << "Biaya kirim: Rp" << ongkir << "\n";
+                        std::cout << "\033[1;32mBiaya kirim: Rp" << ongkir << "\033[0m\n";
 
                         //Konfirmasi lanjut
                         std::cout << "Lanjutkan Checkout dengan ongkir Rp" << ongkir << "? (y/n): ";

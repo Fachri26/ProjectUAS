@@ -32,4 +32,4 @@ int getBalance(NodeBarang* node);
 NodeBarang* rotasiKanan(NodeBarang* y);
 NodeBarang* rotasiKiri(NodeBarang* x);
 
-#endif // DATA_BARANG_H
+#endif 
