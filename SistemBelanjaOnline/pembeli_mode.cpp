@@ -7,6 +7,7 @@
 #include <iostream>
 #include <algorithm>
 #include <stdexcept>
+#include <iomanip>
 
 // Fungsi untuk login pembeli
 bool login_pembeli(const UserTable& user_table, std::string& username) {
@@ -27,7 +28,7 @@ bool login_pembeli(const UserTable& user_table, std::string& username) {
     return false;
 }
 
-//Fungsi untuk registe user
+//Fungsi untuk register user
 bool register_user(UserTable& user_table, const std::string& filename) {
     std::string username, password;
     std::cout << "=== Registrasi Pengguna Baru ===\n";
@@ -56,11 +57,24 @@ void menu_awal_pembeli(UserTable& user_table, NodeBarang* root_barang) {
     const std::string user_data_file = "SistemBelanjaOnline/data/user.txt";
 
     while (true) {
-        std::cout << "\n=== Selamat Datang di Sistem Belanja Online ===\n";
-        std::cout << "1. Login\n";
-        std::cout << "2. Daftar (Registrasi)\n";
-        std::cout << "0. Keluar\n";
-        std::cout << "Pilihan: ";
+        std::cout << "\033[1;36m\n+=============================================+\n";
+        std::cout << "\033[1;36m|\033[1;37m   Selamat Datang di Sistem Belanja Online   \033[1;36m|\n";
+        std::cout << "\033[1;36m+=============================================+\033[0m\n";
+
+        std::vector<std::string> menu = {
+            "1. Login",
+            "2. Daftar (Registrasi)",
+            "0. Keluar"
+        };
+
+        for (const auto& m : menu) {
+            std::cout << "\033[1;36m|\033[0m " 
+                      << std::left << std::setw(44) << m 
+                      << "\033[1;36m|\033[0m\n";
+        }
+
+        std::cout << "\033[1;36m+=============================================+\033[0m\n";
+        std::cout << "\033[1;33mPilihan: \033[0m";
 
         std::string input;
         std::getline(std::cin, input);
@@ -70,10 +84,10 @@ void menu_awal_pembeli(UserTable& user_table, NodeBarang* root_barang) {
         } else if (input == "2") {
             register_user(user_table, user_data_file);
         } else if (input == "0") {
-            std::cout << "Keluar dari sistem. Terima kasih.\n";
+            std::cout << "\033[1;32mKembali ke menu utama.\033[0m\n";
             break;
         } else {
-            std::cout << "Pilihan tidak valid.\n";
+            std::cout << "\033[1;31mPilihan tidak valid.\033[0m\n";
         }
     }
 }
@@ -164,7 +178,7 @@ void tampilkan_keranjang(const std::vector<KeranjangItem>& keranjang) {
 void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
     std::string username;
     if (!login_pembeli(user_table, username)) {
-        std::cout << "Gagal login. Kembali ke menu utama.\n";
+        std::cout << "\033[91mGagal login. Kembali ke menu utama.\033[0m\n";
         return;
     }
 
@@ -174,13 +188,27 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
     std::vector<KeranjangItem> keranjang;
 
     while (true) {
-        std::cout << "\n=== Menu Pembeli ===\n";
-        std::cout << "1. Lihat semua barang\n";
-        std::cout << "2. Cari barang\n";
-        std::cout << "3. Tambah barang ke keranjang\n";
-        std::cout << "4. Lihat keranjang dan checkout\n";
-        std::cout << "0. Logout\n";
-        std::cout << "Pilihan: ";
+        std::cout << "\033[1;36m\n+===================================+\n";
+        std::cout << "\033[1;36m|\033[1;37m           MENU PEMBELI            \033[1;36m|\n";
+        std::cout << "\033[1;36m+===================================+\033[0m\n";
+
+        std::vector<std::string> menu = {
+            "1. Lihat semua barang",
+            "2. Cari barang",
+            "3. Tambah barang ke keranjang",
+            "4. Lihat keranjang dan checkout",
+            "0. Logout"
+        };
+
+        for (const auto& m : menu) {
+            std::cout << "\033[1;36m|\033[0m "
+                      << std::left << std::setw(34) << m 
+                      << "\033[1;36m|\033[0m\n";
+        }
+
+        std::cout << "\033[1;36m+===================================+\033[0m\n";
+
+        std::cout << "\033[1;33mPilihan: \033[0m";
 
         std::string input;
         std::getline(std::cin, input);
@@ -188,7 +216,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
         try {
             int pilihan = safe_stoi(input);
             if (pilihan == 0) {
-                std::cout << "Logout berhasil.\n";
+                std::cout << "\033[1;32mLogout berhasil.\033[0m\n";
                 break;
             }
             else if (pilihan == 1) {
@@ -200,7 +228,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                 std::getline(std::cin, keyword);
                 auto hasil = cari_barang(daftar_barang, keyword);
                 if (hasil.empty()) {
-                    std::cout << "Barang tidak ditemukan.\n";
+                    std::cout << "\033[1;31mBarang tidak ditemukan.\033[0m\n";
                 } else {
                     tampilkan_barang(hasil);
                 }
@@ -223,7 +251,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                     throw std::runtime_error("Jumlah harus positif.");
                 }
                 tambah_ke_keranjang(keranjang, *it, jumlah);
-                std::cout << "Berhasil menambahkan ke keranjang.\n";
+                std::cout << "\033[1;32mBerhasil menambahkan ke keranjang.\033[0m\n";
             }
             else if (pilihan == 4) {
                 tampilkan_keranjang(keranjang);
@@ -232,7 +260,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                 std::getline(std::cin, cek);
                 if (cek == "y" || cek == "Y") {
                     if (keranjang.empty()) {
-                        std::cout << "Keranjang kosong, tidak bisa checkout.\n";
+                        std::cout << "\033[1;31mKeranjang kosong, tidak bisa checkout.\033[0m\n";
                     } else {
                         // Biaya pengiriman dengan graph
                         Graph jaringan;
@@ -253,7 +281,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
 
                         int jarak = estimasi_rute_bfs(jaringan, asal, tujuan);
                         if (jarak == -1) {
-                            std::cout << "Tujuan tidak terjangkau dari " << asal << ". Pengiriman dibatalkan\n";
+                            std::cout << "\033[1;31mTujuan tidak terjangkau dari " << asal << ". Pengiriman dibatalkan.\033[0m\n";
                             return;
                         }
 
@@ -267,7 +295,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                         std::string lanjut;
                         std::getline(std::cin, lanjut);
                         if (lanjut != "y" && lanjut != "Y") {
-                            std::cout << "Checkout dibatalkan.\n";
+                            std::cout << "\033[91mCheckout dibatalkan.\033[0m\n";
                             return;
                         }
                         // Update stok barang pada tree (kurangi stok sesuai keranjang)
@@ -281,7 +309,8 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                                 }
                             }
                         }
-                        std::cout << "Checkout berhasil. Terima kasih telah berbelanja!\n";
+                        simpan_data_barang(root_barang, "SistemBelanjaOnline/data/barang.txt");
+                        std::cout << "\033[1;32mCheckout berhasil. Terima kasih telah berbelanja!\033[0m\n";
                         keranjang.clear();
                         // Reload daftar barang setelah stok berubah
                         daftar_barang.clear();
@@ -293,7 +322,7 @@ void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
                 std::cout << "Pilihan tidak valid.\n";
             }
         } catch (const std::exception& e) {
-            std::cerr << "Error: " << e.what() << "\n";
+            std::cerr << "\033[1;31mError: " << e.what() << "\033[0m\n";
         }
     }
 }
