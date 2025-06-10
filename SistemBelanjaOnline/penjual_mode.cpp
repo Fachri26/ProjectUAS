@@ -8,6 +8,7 @@
 #include <limits>
 #include <vector>
 #include <algorithm>
+#include <iomanip>
 
 // Menampilkan seluruh data barang
 void tampilkan_semua(NodeBarang* root) {
@@ -15,9 +16,20 @@ void tampilkan_semua(NodeBarang* root) {
     inOrder(root, [&](Barang b) {
         daftar.push_back(b);
     });
+    std::cout << "\033[1;97m== Daftar Barang ==\033[0m\n";
+    std::cout << "+------+----------------------+--------+--------+\n";
+    std::cout << "| \033[1;97mID\033[0m   | \033[1;97mNama Barang\033[0m          | \033[1;97mStok\033[0m    | \033[1;97mHarga\033[0m |\n";
+    std::cout << "+------+----------------------+--------+--------+\n";
+
     for (const auto& b : daftar) {
-        std::cout << "ID: " << b.id << ", Nama: " << b.nama << ", Stok: " << b.stok << ", Harga: " << b.harga << '\n';
+        std::cout << "| "
+                  << std::right << std::setw(4) << b.id << " | "
+                  << std::left  << std::setw(20) << b.nama << " | "
+                  << std::right << std::setw(6) << b.stok << " | "
+                  << std::right << std::setw(6) << b.harga << " |\n";
     }
+
+    std::cout << "+------+----------------------+--------+--------+\n";
 }
 
 // Memberikan pilihan untuk urut berdasarkan nama barang atau stok
@@ -27,16 +39,31 @@ void tampilkan_sort(NodeBarang* root) {
         daftar.push_back(b);
     });
 
-    std::cout << "\nUrut berdasarkan:\n1. Nama (A-Z)\n2. Stok (terbesar)\n> ";
+    std::cout << "\n\033[93mUrut berdasarkan:\033[0m\n1. Nama (A-Z)\n2. Stok (terbesar)\nPilihan:\033[0m ";
     std::string pilihan;
     std::getline(std::cin, pilihan);
 
     if (pilihan == "1") sort_barang_by_nama(daftar);
     else if (pilihan == "2") sort_barang_by_stok(daftar);
+    else {
+        std::cout << "\033[31mPilihan tidak valid. Kembali ke menu.\033[0m\n";
+        return;
+    }
+
+    std::cout << "\n\033[1;97m== Barang Terurut ==\033[0m\n";
+    std::cout << "+------+----------------------+--------+--------+\n";
+    std::cout << "| \033[1;97mID\033[0m   | \033[1;97mNama Barang\033[0m          | \033[1;97mStok\033[0m   | \033[1;97mHarga\033[0m  |\n";
+    std::cout << "+------+----------------------+--------+--------+\n";
 
     for (const auto& b : daftar) {
-        std::cout << "ID: " << b.id << ", Nama: " << b.nama << ", Stok: " << b.stok << ", Harga: " << b.harga << '\n';
+        std::cout << "| "
+                  << std::right << std::setw(4) << b.id << " | "
+                  << std::left  << std::setw(20) << b.nama << " | "
+                  << std::right << std::setw(6) << b.stok << " | "
+                  << std::right << std::setw(6) << b.harga << " |\n";
     }
+
+    std::cout << "+------+----------------------+--------+--------+\n";
 }
 
 // Menampilkan stok yang dibawah 10
@@ -49,15 +76,25 @@ void tampilkan_stok_rendah(NodeBarang* root) {
         }
     });
 
-    std::cout << "Barang dengan stok rendah:\n";
-    for (const auto& b : daftar) {
-        std::cout << "ID: " << b.id << ", Nama: " << b.nama
-                  << ", Stok: " << b.stok << '\n';
+    if (daftar.empty()) {
+        std::cout << "\033[91mTidak ada barang dengan stok rendah.\033[0m\n";
+        return;
     }
 
-    int jumlah = hitung_barang_stok_rendah(daftar);
-    std::cout << "Total barang dengan stok rendah: " << jumlah << '\n';
+    std::cout << "\n\033[1;97m== Barang dengan Stok Rendah ==\033[0m\n";
+    std::cout << "+------+----------------------+--------+\n";
+    std::cout << "| \033[1;97mID\033[0m   | \033[1;97mNama Barang\033[0m          | \033[1;97mStok\033[0m   |\n";
+    std::cout << "+------+----------------------+--------+\n";
 
+    for (const auto& b : daftar) {
+        std::cout << "| "
+                  << std::right << std::setw(4) << b.id << " | "
+                  << std::left  << std::setw(20) << b.nama << " | "
+                  << std::right << std::setw(6) << b.stok << " |\n";
+    }
+
+    std::cout << "+------+----------------------+--------+\n";
+    std::cout << "\033[93mTotal barang dengan stok rendah:\033[0m " << daftar.size() << '\n';
 }
 
 // Menambahkan barang
@@ -65,6 +102,7 @@ void tambah_barang(NodeBarang*& root) {
     Barang b;
     std::string input;
 
+    std::cout << "\n\033[93m== Tambah Barang Baru ==\033[0m\n";
     std::cout << "ID: ";
     std::getline(std::cin, input);
     b.id = safe_stoi(input);
@@ -81,24 +119,29 @@ void tambah_barang(NodeBarang*& root) {
     b.harga = std::stod(input);
 
     if (cariBarang(root, b.id)) {
-        std::cout << "ID sudah ada. Gagal tambah.\n";
+        std::cout << "\033[91mID sudah ada. Gagal tambah.\033[0m\n";
         return;
     }
 
     root = insertBarang(root, b);
-    std::cout << "Barang berhasil ditambahkan.\n";
+    std::cout << "\033[92mBarang berhasil ditambahkan.\033[0m\n";
 }
 
 // Mengedit barang
 void edit_barang(NodeBarang* root) {
     std::string input;
+    std::cout << "\n\033[93m== Edit Barang ==\033[0m\n";
+    if (!root) {
+        std::cout << "\033[91mTidak ada barang untuk diedit.\033[0m\n";
+        return;
+    }
     std::cout << "Masukkan ID barang yang ingin diedit: ";
     std::getline(std::cin, input);
     int id = safe_stoi(input);
 
     NodeBarang* node = cariBarang(root, id);
     if (!node) {
-        std::cout << "Barang tidak ditemukan.\n";
+        std::cout << "\033[91mBarang dengan ID " << id << " tidak ditemukan.\033[0m\n";
         return;
     }
 
@@ -114,38 +157,55 @@ void edit_barang(NodeBarang* root) {
     std::getline(std::cin, input);
     if (!input.empty()) node->data.harga = std::stod(input);
 
-    std::cout << "Barang berhasil diedit.\n";
+    std::cout << "\033[92mBarang berhasil diedit.\033[0m\n";
 }
 
 // Menghapus barang
 void hapus_barang(NodeBarang*& root) {
     std::string input;
+    std::cout << "\n\033[93m== Hapus Barang ==\033[0m\n";
+    if (!root) {
+        std::cout << "\033[91mTidak ada barang untuk dihapus.\033[0m\n";
+        return;
+    }
     std::cout << "Masukkan ID barang yang ingin dihapus: ";
     std::getline(std::cin, input);
     int id = safe_stoi(input);
 
     if (!cariBarang(root, id)) {
-        std::cout << "Barang tidak ditemukan.\n";
+        std::cout << "\033[91mBarang dengan ID " << id << " tidak ditemukan.\033[0m\n";
         return;
     }
 
     root = hapusBarang(root, id);
-    std::cout << "Barang berhasil dihapus.\n";
+    std::cout << "\033[92mBarang berhasil dihapus.\033[0m\n";
 }
 
 // Menu utama mode penjual
 void menu_penjual(NodeBarang*& root, const std::string& file_barang) {
     std::string pilihan;
     while (true) {
-        std::cout << "\n===== Menu Penjual =====\n";
-        std::cout << "1. Tampilkan semua barang\n";
-        std::cout << "2. Tambah barang\n";
-        std::cout << "3. Edit barang\n";
-        std::cout << "4. Hapus barang\n";
-        std::cout << "5. Urutkan & tampilkan barang\n";
-        std::cout << "6. Barang stok rendah\n";
-        std::cout << "7. Simpan dan keluar\n> ";
-        std::cout << "Pilih: ";
+        std::cout << "\033[1;36m\n+====================================+\n";
+        std::cout << "\033[1;36m|\033[1;37m         == MENU PENJUAL ==         \033[1;36m|\n";
+        std::cout << "\033[1;36m+====================================+\033[0m\n";
+
+        std::vector<std::string> menu = {
+            "1. Tampilkan semua barang",
+            "2. Tambah barang",
+            "3. Edit barang",
+            "4. Hapus barang",
+            "5. Urutkan & tampilkan barang",
+            "6. Barang stok rendah",
+            "7. Simpan dan keluar"
+        };
+        for (const auto& m : menu) {
+            std::cout << "\033[1;36m|\033[0m " 
+                      << std::left << std::setw(35) << m 
+                      << "\033[1;36m|\033[0m\n";
+        }
+        std::cout << "\033[1;36m+====================================+\033[0m\n";
+
+        std::cout << "\033[1;33m> Pilihan: \033[0m";
         std::getline(std::cin, pilihan);
 
         try {
@@ -157,13 +217,13 @@ void menu_penjual(NodeBarang*& root, const std::string& file_barang) {
             else if (pilihan == "6") tampilkan_stok_rendah(root);
             else if (pilihan == "7") {
                 simpan_data_barang(root, file_barang);
-                std::cout << "Data berhasil disimpan.\n";
+                std::cout << "\033[92mData berhasil disimpan.\033[0m\n";
                 break;
             } else {
-                std::cout << "Pilihan tidak valid.\n";
+                std::cout << "\033[91mPilihan tidak valid.\033[0m\n";
             }
         } catch (const std::exception& e) {
-            std::cerr << "Terjadi kesalahan: " << e.what() << '\n';
+            std::cerr << "\033[91mTerjadi kesalahan: " << e.what() << "\033[0m\n";
         }
     }
 }
