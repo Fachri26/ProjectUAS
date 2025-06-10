@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 #include <stdexcept>
+#include <iomanip>
 
 #include "include/penjual_mode.hpp"
 #include "include/pembeli_mode.hpp"
@@ -33,17 +34,18 @@ int main() {
     };
 
     while (true) {
-        std::cout << "\n===== MENU UTAMA =====\n";
-
-        std::sort(menu.begin(), menu.end(), [](const std::string& a, const std::string& b) {
-            return a < b;
-        });
+        std::cout << "\n\033[1;97m+==============================+\033[0m\n";  
+        std::cout << "\033[1;97m|         MENU UTAMA           |\033[0m\n";  
+        std::cout << "\033[1;97m+==============================+\033[0m\n"; 
 
         for (const auto& m : menu) {
-            std::cout << m << "\n";
+            std::cout << "\033[1;97m| " << std::left << std::setw(29) << m << "|\033[0m\n";
         }
 
+        std::cout << "\033[1;97m+==============================+\033[0m\n";
         std::cout << "Pilih opsi: ";
+        std::cout << "\033[0m"; 
+
         std::string input;
         std::getline(std::cin, input);
 
@@ -60,10 +62,10 @@ int main() {
                 std::cout << "Data disimpan. Terima kasih!\n";
                 break;
             } else {
-                std::cout << "Pilihan tidak valid.\n";
+                std::cout << "\033[91mPilihan tidak valid.\n";
             }
         } catch (const std::exception& e) {
-            std::cerr << "Input error: " << e.what() << "\n";
+            std::cerr << "\033[91mInput error: " << e.what() << "\n";
         }
     }
 
