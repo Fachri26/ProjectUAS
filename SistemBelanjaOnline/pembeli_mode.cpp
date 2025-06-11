@@ -103,19 +103,19 @@ void flatten_barang(NodeBarang* root, std::vector<Barang>& daftar) {
 // fungsi untuk menampilkan daftar barang
 void tampilkan_barang(const std::vector<Barang>& daftar) {
     std::cout << "\033[1;97m== Daftar Barang ==\033[0m\n";
-    std::cout << "+------+----------------------+--------+--------+\n";
-    std::cout << "| \033[1;97mID\033[0m   | \033[1;97mNama Barang\033[0m          | \033[1;97mStok\033[0m    | \033[1;97mHarga\033[0m |\n";
-    std::cout << "+------+----------------------+--------+--------+\n";
+    std::cout << "+------+----------------------+--------+------------+\n";
+    std::cout << "| \033[1;97mID\033[0m   | \033[1;97mNama Barang\033[0m          | \033[1;97mStok\033[0m   | \033[1;97mHarga\033[0m      |\n";
+    std::cout << "+------+----------------------+--------+------------+\n";
 
     for (const auto& b : daftar) {
         std::cout << "| "
                   << std::right << std::setw(4) << b.id << " | "
                   << std::left  << std::setw(20) << b.nama << " | "
                   << std::right << std::setw(6) << b.stok << " | "
-                  << std::right << std::setw(6) << b.harga << " |\n";
+                  << std::right << std::setw(10) << b.harga << " |\n";
     }
 
-    std::cout << "+------+----------------------+--------+--------+\n";
+    std::cout << "+------+----------------------+--------+------------+\n";
 }
 
 // Fungsi untuk inisasliasi rute pengiriman
@@ -178,7 +178,7 @@ void tampilkan_keranjang(const std::vector<KeranjangItem>& keranjang) {
 
     std::cout << "\033[1;97m== Keranjang Anda ==\033[0m\n";
     std::cout << "+----------------------+--------+---------------+------------+\n";
-    std::cout << "| \033[1;97mNama Barang\033[0m          | \033[1;97mJumlah\033[0m | \033[1;97mHarga Satuan\033[0m   | \033[1;97mSubtotal\033[0m   |\n";
+    std::cout << "| \033[1;97mNama Barang\033[0m          | \033[1;97mJumlah\033[0m | \033[1;97mHarga Satuan\033[0m  | \033[1;97mSubtotal\033[0m   |\n";
     std::cout << "+----------------------+--------+---------------+------------+\n";
 
     for (const auto& item : keranjang) {
@@ -186,12 +186,12 @@ void tampilkan_keranjang(const std::vector<KeranjangItem>& keranjang) {
         std::cout << "| "
                   << std::left  << std::setw(20) << item.barang.nama << " | "
                   << std::right << std::setw(6)  << item.jumlah       << " | "
-                  << std::right << std::setw(13) << std::fixed << std::setprecision(2) << item.barang.harga << " | "
-                  << std::right << std::setw(10) << std::fixed << std::setprecision(2) << subtotal << " |\n";
+                  << std::right << std::setw(13) << item.barang.harga << " | "
+                  << std::right << std::setw(10) << subtotal << " |\n";
     }
 
     std::cout << "+----------------------+--------+---------------+------------+\n";
-    std::cout << "Total Harga: \033[1;92m" << std::fixed << std::setprecision(2) << total_harga(keranjang) << "\033[0m\n";
+    std::cout << "Total Harga: \033[1;92m" << total_harga(keranjang) << "\033[0m\n";
 }
 
 void menu_pembeli(UserTable& user_table, NodeBarang* root_barang) {
